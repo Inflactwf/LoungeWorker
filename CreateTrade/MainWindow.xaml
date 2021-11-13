@@ -1,0 +1,537 @@
+﻿<Window x:Name="MainW" x:Class="CreateTrade.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CreateTrade"
+        mc:Ignorable="d"
+        Title="Lounge Worker" Height="676" SizeToContent="WidthAndHeight" Width="819" Loaded="Window_Loaded" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Icon="lounge.ico">
+    <Window.Resources>
+        <LinearGradientBrush x:Key="BtnPlayHover" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FF36ACFE" Offset="0"/>
+            <GradientStop Color="#FF0298de" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="BtnPlayPressed" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FF0d83b8" Offset="0"/>
+            <GradientStop Color="#FF00618e" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="BtnPlay" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FF0f99d9" Offset="0"/>
+            <GradientStop Color="#FF0177af" Offset="1"/>
+        </LinearGradientBrush>
+
+        <Style x:Key="DefaultBlueButton" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid x:Name="Grid" Opacity="1">
+                            <Border x:Name="Border"  BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" HorizontalAlignment="Stretch" Width="Auto" CornerRadius="3" Background="{DynamicResource BtnPlay}"/>
+                            <!--<TextBlock x:Name="ContentText" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Content}" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="Auto"/>-->
+                            <ContentPresenter x:Name="ContentText" Margin="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="{DynamicResource BtnPlayHover}" TargetName="Border"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" Value="{DynamicResource BtnPlayPressed}" TargetName="Border"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" Value="{DynamicResource BtnPlay}" TargetName="Border"/>
+                                <Setter Property="Opacity" Value="0.20" TargetName="Grid"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="true"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <TabControl HorizontalAlignment="Left" Height="647" VerticalAlignment="Top" Width="813">
+            <TabItem x:Name="GeneralFunctionsTab" Header="Общее" Margin="-2,-2,-57,0">
+                <Grid Background="#FFE5E5E5">
+                    <GroupBox x:Name="_csgo_SettingsGroupBox" Header="Настройки CSGOLounge" HorizontalAlignment="Left" Height="151" Margin="14,6,0,0" VerticalAlignment="Top" Width="782">
+                        <GroupBox.BorderBrush>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF0074FF" Offset="0.007"/>
+                                <GradientStop Color="#FF00132E" Offset="0.997"/>
+                            </LinearGradientBrush>
+                        </GroupBox.BorderBrush>
+                        <Grid HorizontalAlignment="Left" Height="132" Margin="0,0,-2,-4" VerticalAlignment="Top" Width="772">
+                            <TextBox x:Name="_csgo_AuthorizationBox" HorizontalAlignment="Left" Height="41" Margin="104,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="658" VerticalContentAlignment="Center" TextChanged="_csgo_AuthorizationBox_TextChanged" FontSize="10" Padding="5,0"/>
+                            <Label x:Name="_csgo_AuthorizationLabel" Content="Authorization: " HorizontalAlignment="Left" Margin="11,53,0,0" VerticalAlignment="Top"/>
+                            <TextBox x:Name="_csgo_cfduidBox" HorizontalAlignment="Left" Height="31" Margin="72,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="690" VerticalContentAlignment="Center" TextChanged="_csgo_cfduidBox_TextChanged" Padding="5,0,0,0" FontSize="10"/>
+                            <Label x:Name="_csgo_CFDUidLabel" Content="cfduid: " HorizontalAlignment="Left" Margin="11,12,0,0" VerticalAlignment="Top"/>
+                            <Button x:Name="_csgo_ChangeBotPathBtn" Content="Изменить..." HorizontalAlignment="Left" Margin="544,92,0,0" VerticalAlignment="Top" Width="78" Height="30" FontSize="10" Click="_csgo_ChangeBotPathBtn_Click"/>
+                            <Label x:Name="_csgo_BotPathLabel" Content="Путь к боту:" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top"/>
+                            <TextBox x:Name="_csgo_BotPathBox" HorizontalAlignment="Left" Height="30" Margin="90,92,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="449" VerticalContentAlignment="Center" FontSize="10" Padding="5,0" IsReadOnly="True"/>
+                            <Button x:Name="_csgo_StartBotBtn" Content="Запустить" HorizontalAlignment="Left" Margin="627,92,0,0" VerticalAlignment="Top" Width="135" Height="30" FontSize="10" Click="_csgo_StartBotBtn_Click"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox x:Name="_dota_SettingsGroupBox" Header="Настройки Dota2Lounge" HorizontalAlignment="Left" Height="151" Margin="14,162,0,0" VerticalAlignment="Top" Width="782">
+                        <GroupBox.BorderBrush>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF0074FF" Offset="0.007"/>
+                                <GradientStop Color="#FF00132E" Offset="0.997"/>
+                            </LinearGradientBrush>
+                        </GroupBox.BorderBrush>
+                        <Grid HorizontalAlignment="Left" Height="132" Margin="0,0,-2,-4" VerticalAlignment="Top" Width="772">
+                            <TextBox x:Name="_dota_AuthorizationBox" HorizontalAlignment="Left" Height="41" Margin="104,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="658" VerticalContentAlignment="Center" FontSize="10" Padding="5,0" TextChanged="_dota_AuthorizationBox_TextChanged"/>
+                            <Label x:Name="_dota_AuthorizationLabel" Content="Authorization: " HorizontalAlignment="Left" Margin="11,53,0,0" VerticalAlignment="Top"/>
+                            <TextBox x:Name="_dota_cfduidBox" HorizontalAlignment="Left" Height="31" Margin="72,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="690" VerticalContentAlignment="Center" Padding="5,0,0,0" FontSize="10" TextChanged="_dota_cfduidBox_TextChanged"/>
+                            <Label x:Name="_dota_CFDUidLabel" Content="cfduid: " HorizontalAlignment="Left" Margin="11,12,0,0" VerticalAlignment="Top"/>
+                            <Button x:Name="_dota_ChangeBotPathBtn" Content="Изменить..." HorizontalAlignment="Left" Margin="544,92,0,0" VerticalAlignment="Top" Width="78" Height="30" FontSize="10" Click="_dota_ChangeBotPathBtn_Click"/>
+                            <Label x:Name="_dota_BotPathLabel" Content="Путь к боту:" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top"/>
+                            <TextBox x:Name="_dota_BotPathBox" HorizontalAlignment="Left" Height="30" Margin="90,92,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="449" VerticalContentAlignment="Center" FontSize="10" Padding="5,0" IsReadOnly="True"/>
+                            <Button x:Name="_dota_StartBotBtn" Content="Запустить" HorizontalAlignment="Left" Margin="627,92,0,0" VerticalAlignment="Top" Width="135" Height="30" FontSize="10" Click="_dota_StartBotBtn_Click"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox x:Name="_general_AutoBlockGroupBox" Header="Автоматическая блокировка" HorizontalAlignment="Left" Height="277" Margin="14,318,0,0" VerticalAlignment="Top" Width="782">
+                        <GroupBox.BorderBrush>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF0074FF" Offset="0.007"/>
+                                <GradientStop Color="#FF00132E" Offset="0.997"/>
+                            </LinearGradientBrush>
+                        </GroupBox.BorderBrush>
+                        <Grid HorizontalAlignment="Left" Width="772" Margin="0,0,-2,-4">
+                            <Button x:Name="_general_BlockButton" Content="Заблокировать" HorizontalAlignment="Left" Margin="623,207,0,0" VerticalAlignment="Top" Width="139" Click="_csgo_BlockButton_Click" Height="41" Padding="1"/>
+                            <TextBox x:Name="_general_BlockUsersListBox" HorizontalAlignment="Left" Height="152" Margin="10,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="752" AcceptsReturn="True" Padding="10,3,0,3" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto"/>
+                            <Label x:Name="_general_ListLabel" Content="Список:" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top"/>
+                            <ProgressBar x:Name="BlockingProgressBar" HorizontalAlignment="Left" Height="41" Margin="10,207,0,0" VerticalAlignment="Top" Width="559"/>
+                            <Label x:Name="_general_BlockedLabel" Content="Заблокировано: 0; Пропущено: 0; Ошибки: 0" HorizontalAlignment="Left" Margin="5,184,0,0" VerticalAlignment="Top" FontSize="10"/>
+                            <Button x:Name="_general_RepeatBlockButton" Content="⟲" HorizontalAlignment="Left" Margin="574,207,0,0" VerticalAlignment="Top" Width="44" Height="41" Padding="1,1,2,5" FontSize="25" Click="_general_RepeatBlockButton_Click"/>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="CSGOLoungeTab" Header="CSGOLounge" Margin="56,-2,-56,0" Width="132">
+                <Grid Background="#FFE5E5E5">
+                    <GroupBox x:Name="_csgo_AutoBumpGroupBox" Header="Автоматическое поднятие сделок" HorizontalAlignment="Left" Height="98" Margin="13,511,0,0" VerticalAlignment="Top" Width="782">
+                        <GroupBox.BorderBrush>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF0074FF" Offset="0.007"/>
+                                <GradientStop Color="#FF00132E" Offset="0.997"/>
+                            </LinearGradientBrush>
+                        </GroupBox.BorderBrush>
+                        <Grid HorizontalAlignment="Left" Height="76" Margin="0,0,-2,-13" VerticalAlignment="Top" Width="772">
+                            <TextBox x:Name="_csgo_Trade6Box" HorizontalAlignment="Left" Height="24" Margin="353,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" VerticalContentAlignment="Center" TextChanged="_csgo_Trade6Box_TextChanged"/>
+                            <TextBox x:Name="_csgo_Trade5Box" HorizontalAlignment="Left" Height="24" Margin="183,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" VerticalContentAlignment="Center" TextChanged="_csgo_Trade5Box_TextChanged"/>
+                            <TextBox x:Name="_csgo_Trade4Box" HorizontalAlignment="Left" Height="24" Margin="13,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" VerticalContentAlignment="Center" TextChanged="_csgo_Trade4Box_TextChanged"/>
+                            <TextBox x:Name="_csgo_Trade3Box" HorizontalAlignment="Left" Height="24" Margin="353,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" VerticalContentAlignment="Center" TextChanged="_csgo_Trade3Box_TextChanged"/>
+                            <TextBox x:Name="_csgo_Trade2Box" HorizontalAlignment="Left" Height="24" Margin="183,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" VerticalContentAlignment="Center" TextChanged="_csgo_Trade2Box_TextChanged"/>
+                            <TextBox x:Name="_csgo_Trade1Box" HorizontalAlignment="Left" Height="24" Margin="13,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" VerticalContentAlignment="Center" TextChanged="_csgo_Trade1Box_TextChanged"/>
+                            <Button x:Name="_csgo_AutoBumpStartBtn" Content="Запустить" HorizontalAlignment="Left" Margin="529,13,0,0" VerticalAlignment="Top" Width="232" Height="24" Click="_csgo_AutoBumpStartBtn_Click"/>
+                            <Button x:Name="_csgo_AutoBumpStopBtn" Content="Остановить" HorizontalAlignment="Left" Margin="529,42,0,0" VerticalAlignment="Top" Width="232" Height="24" IsEnabled="False" Click="_csgo_AutoBumpStopBtn_Click"/>
+                        </Grid>
+                    </GroupBox>
+                    <TabControl x:Name="_csgo_TradesTab" HorizontalAlignment="Left" Height="482" Margin="13,24,0,0" VerticalAlignment="Top" Width="782" Background="#FFE5E5E5">
+                        <TabControl.BorderBrush>
+                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                <GradientStop Color="#FF0074FF" Offset="0"/>
+                                <GradientStop Color="#FF00132E" Offset="1"/>
+                            </LinearGradientBrush>
+                        </TabControl.BorderBrush>
+                        <TabItem Header="Сделка 1" Margin="-2,0,-64,0" BorderBrush="#FF24416A" Height="26">
+                            <Grid HorizontalAlignment="Left" Height="449" Margin="0,0,0,-1" VerticalAlignment="Top" Width="772">
+                                <Button x:Name="_csgo_RunButton" Content="Создать" HorizontalAlignment="Left" Margin="593,390,0,0" VerticalAlignment="Top" Width="169" Click="_csgo_RunButton_Click" Height="49"/>
+                                <TextBox x:Name="_csgo_Item8Box" HorizontalAlignment="Left" Height="24" Margin="136,275,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item8Box_TextChanged"/>
+                                <Label x:Name="_csgo_Label1" Content="Предмет 1:" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_Item7Box" HorizontalAlignment="Left" Height="24" Margin="136,246,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item7Box_TextChanged"/>
+                                <Label x:Name="_csgo_Label2" Content="Предмет 2:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_Item6Box" HorizontalAlignment="Left" Height="24" Margin="136,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item6Box_TextChanged"/>
+                                <Label x:Name="_csgo_Label3" Content="Предмет 3:" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_Item5Box" HorizontalAlignment="Left" Height="25" Margin="136,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item5Box_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item4Box" HorizontalAlignment="Left" Height="25" Margin="136,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item4Box_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item3Box" HorizontalAlignment="Left" Height="24" Margin="136,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item3Box_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item2Box" HorizontalAlignment="Left" Height="24" Margin="136,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item2Box_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item1Box" HorizontalAlignment="Left" Height="24" Margin="136,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item1Box_TextChanged"/>
+                                <Label x:Name="_csgo_Label4" Content="Предмет 4:" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="88" Height="23" FontSize="10"/>
+                                <Label x:Name="_csgo_Label5" Content="Предмет 5:" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_csgo_Label6" Content="Предмет 6:" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_csgo_Label7" Content="Предмет 7:" HorizontalAlignment="Left" Margin="10,247,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_csgo_Label8" Content="Предмет 8:" HorizontalAlignment="Left" Margin="10,276,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_DescriptionBox" HorizontalAlignment="Left" Height="112" Margin="10,327,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="578" TextChanged="_csgo_DescriptionBox_TextChanged"/>
+                                <Label x:Name="_csgo_DescriptionLabel" Content="Описание: " HorizontalAlignment="Left" Margin="9,307,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_CaptchaBox" HorizontalAlignment="Left" Height="38" Margin="136,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" Padding="5,0" FontSize="10"/>
+                                <Label x:Name="_csgo_CaptchaLabel" Content="Captcha:" HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Сделка 2" Margin="63,0,-63,0" BorderBrush="#FF24416A" Height="26" Width="131">
+                            <Grid HorizontalAlignment="Left" Height="456" Margin="0,0,0,-359" VerticalAlignment="Top" Width="772">
+                                <Button x:Name="_csgo_RunButton1" Content="Создать" HorizontalAlignment="Left" Margin="593,390,0,0" VerticalAlignment="Top" Width="169" Height="49" Click="_csgo_RunButton1_Click"/>
+                                <TextBox x:Name="_csgo_Item8Box1" HorizontalAlignment="Left" Height="24" Margin="136,275,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item8Box1_TextChanged"/>
+                                <Label x:Name="_csgo_Label9" Content="Предмет 1:" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_Item7Box1" HorizontalAlignment="Left" Height="24" Margin="136,246,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item7Box1_TextChanged"/>
+                                <Label x:Name="_csgo_Label10" Content="Предмет 2:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_Item6Box1" HorizontalAlignment="Left" Height="24" Margin="136,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item6Box1_TextChanged"/>
+                                <Label x:Name="_csgo_Label11" Content="Предмет 3:" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_Item5Box1" HorizontalAlignment="Left" Height="25" Margin="136,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item5Box1_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item4Box1" HorizontalAlignment="Left" Height="25" Margin="136,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item4Box1_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item3Box1" HorizontalAlignment="Left" Height="24" Margin="136,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item3Box1_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item2Box1" HorizontalAlignment="Left" Height="24" Margin="136,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item2Box1_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item1Box1" HorizontalAlignment="Left" Height="24" Margin="136,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item1Box1_TextChanged"/>
+                                <Label x:Name="_csgo_Label12" Content="Предмет 4:" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="88" Height="23" FontSize="10"/>
+                                <Label x:Name="_csgo_Label13" Content="Предмет 5:" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_csgo_Label14" Content="Предмет 6:" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_csgo_Label15" Content="Предмет 7:" HorizontalAlignment="Left" Margin="10,247,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_csgo_Label16" Content="Предмет 8:" HorizontalAlignment="Left" Margin="10,276,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_DescriptionBox1" HorizontalAlignment="Left" Height="112" Margin="10,327,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="578" TextChanged="_csgo_DescriptionBox1_TextChanged"/>
+                                <Label x:Name="_csgo_DescriptionLabel1" Content="Описание: " HorizontalAlignment="Left" Margin="9,307,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_CaptchaBox1" HorizontalAlignment="Left" Height="38" Margin="136,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" Padding="5,0" FontSize="10"/>
+                                <Label x:Name="_csgo_CaptchaLabel1" Content="Captcha:" HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Сделка 3" Margin="62,0,-62,0" BorderBrush="#FF24416A" Height="26" Width="131">
+                            <Grid HorizontalAlignment="Left" Height="456" Margin="0,0,0,-359" VerticalAlignment="Top" Width="772">
+                                <Button x:Name="_csgo_RunButton2" Content="Создать" HorizontalAlignment="Left" Margin="593,390,0,0" VerticalAlignment="Top" Width="169" Height="49" Click="_csgo_RunButton2_Click"/>
+                                <TextBox x:Name="_csgo_Item8Box2" HorizontalAlignment="Left" Height="24" Margin="136,275,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item8Box2_TextChanged"/>
+                                <Label x:Name="_csgo_Label17" Content="Предмет 1:" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_Item7Box2" HorizontalAlignment="Left" Height="24" Margin="136,246,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item7Box2_TextChanged"/>
+                                <Label x:Name="_csgo_Label18" Content="Предмет 2:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_Item6Box2" HorizontalAlignment="Left" Height="24" Margin="136,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item6Box2_TextChanged"/>
+                                <Label x:Name="_csgo_Label19" Content="Предмет 3:" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_Item5Box2" HorizontalAlignment="Left" Height="25" Margin="136,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item5Box2_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item4Box2" HorizontalAlignment="Left" Height="25" Margin="136,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item4Box2_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item3Box2" HorizontalAlignment="Left" Height="24" Margin="136,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item3Box2_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item2Box2" HorizontalAlignment="Left" Height="24" Margin="136,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item2Box2_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item1Box2" HorizontalAlignment="Left" Height="24" Margin="136,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item1Box2_TextChanged"/>
+                                <Label x:Name="_csgo_Label20" Content="Предмет 4:" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="88" Height="23" FontSize="10"/>
+                                <Label x:Name="_csgo_Label21" Content="Предмет 5:" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_csgo_Label22" Content="Предмет 6:" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_csgo_Label23" Content="Предмет 7:" HorizontalAlignment="Left" Margin="10,247,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_csgo_Label24" Content="Предмет 8:" HorizontalAlignment="Left" Margin="10,276,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_DescriptionBox2" HorizontalAlignment="Left" Height="112" Margin="10,327,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="578" TextChanged="_csgo_DescriptionBox2_TextChanged"/>
+                                <Label x:Name="_csgo_DescriptionLabel2" Content="Описание: " HorizontalAlignment="Left" Margin="9,307,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_CaptchaBox2" HorizontalAlignment="Left" Height="38" Margin="136,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" Padding="5,0" FontSize="10"/>
+                                <Label x:Name="_csgo_CaptchaLabel2" Content="Captcha:" HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Сделка 4" Margin="61,0,-61,0" BorderBrush="#FF24416A" Height="26" Width="131">
+                            <Grid HorizontalAlignment="Left" Height="456" Margin="0,0,0,-359" VerticalAlignment="Top" Width="772">
+                                <Button x:Name="_csgo_RunButton3" Content="Создать" HorizontalAlignment="Left" Margin="593,390,0,0" VerticalAlignment="Top" Width="169" Height="49" Click="_csgo_RunButton3_Click"/>
+                                <TextBox x:Name="_csgo_Item8Box3" HorizontalAlignment="Left" Height="24" Margin="136,275,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item8Box3_TextChanged"/>
+                                <Label x:Name="_csgo_Label25" Content="Предмет 1:" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_Item7Box3" HorizontalAlignment="Left" Height="24" Margin="136,246,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item7Box3_TextChanged"/>
+                                <Label x:Name="_csgo_Label26" Content="Предмет 2:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_Item6Box3" HorizontalAlignment="Left" Height="24" Margin="136,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item6Box3_TextChanged"/>
+                                <Label x:Name="_csgo_Label27" Content="Предмет 3:" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_Item5Box3" HorizontalAlignment="Left" Height="25" Margin="136,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item5Box3_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item4Box3" HorizontalAlignment="Left" Height="25" Margin="136,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item4Box3_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item3Box3" HorizontalAlignment="Left" Height="24" Margin="136,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item3Box3_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item2Box3" HorizontalAlignment="Left" Height="24" Margin="136,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item2Box3_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item1Box3" HorizontalAlignment="Left" Height="24" Margin="136,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item1Box3_TextChanged"/>
+                                <Label x:Name="_csgo_Label28" Content="Предмет 4:" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="88" Height="23" FontSize="10"/>
+                                <Label x:Name="_csgo_Label29" Content="Предмет 5:" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_csgo_Label30" Content="Предмет 6:" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_csgo_Label31" Content="Предмет 7:" HorizontalAlignment="Left" Margin="10,247,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_csgo_Label32" Content="Предмет 8:" HorizontalAlignment="Left" Margin="10,276,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_DescriptionBox3" HorizontalAlignment="Left" Height="112" Margin="10,327,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="578" TextChanged="_csgo_DescriptionBox3_TextChanged"/>
+                                <Label x:Name="_csgo_DescriptionLabel3" Content="Описание: " HorizontalAlignment="Left" Margin="9,307,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_CaptchaBox3" HorizontalAlignment="Left" Height="38" Margin="136,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" Padding="5,0" FontSize="10"/>
+                                <Label x:Name="_csgo_CaptchaLabel3" Content="Captcha:" HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Сделка 5" Margin="60,0,-60,0" BorderBrush="#FF24416A" Height="26" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" Width="131">
+                            <Grid HorizontalAlignment="Left" Height="456" Margin="0,0,0,-359" VerticalAlignment="Top" Width="772">
+                                <Button x:Name="_csgo_RunButton4" Content="Создать" HorizontalAlignment="Left" Margin="593,390,0,0" VerticalAlignment="Top" Width="169" Height="49" Click="_csgo_RunButton4_Click"/>
+                                <TextBox x:Name="_csgo_Item8Box4" HorizontalAlignment="Left" Height="24" Margin="136,275,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item8Box4_TextChanged"/>
+                                <Label x:Name="_csgo_Label33" Content="Предмет 1:" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_Item7Box4" HorizontalAlignment="Left" Height="24" Margin="136,246,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item7Box4_TextChanged"/>
+                                <Label x:Name="_csgo_Label34" Content="Предмет 2:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_Item6Box4" HorizontalAlignment="Left" Height="24" Margin="136,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item6Box4_TextChanged"/>
+                                <Label x:Name="_csgo_Label35" Content="Предмет 3:" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_Item5Box4" HorizontalAlignment="Left" Height="25" Margin="136,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item5Box4_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item4Box4" HorizontalAlignment="Left" Height="25" Margin="136,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item4Box4_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item3Box4" HorizontalAlignment="Left" Height="24" Margin="136,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item3Box4_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item2Box4" HorizontalAlignment="Left" Height="24" Margin="136,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item2Box4_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item1Box4" HorizontalAlignment="Left" Height="24" Margin="136,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item1Box4_TextChanged"/>
+                                <Label x:Name="_csgo_Label36" Content="Предмет 4:" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="88" Height="23" FontSize="10"/>
+                                <Label x:Name="_csgo_Label37" Content="Предмет 5:" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_csgo_Label38" Content="Предмет 6:" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_csgo_Label39" Content="Предмет 7:" HorizontalAlignment="Left" Margin="10,247,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_csgo_Label40" Content="Предмет 8:" HorizontalAlignment="Left" Margin="10,276,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_DescriptionBox4" HorizontalAlignment="Left" Height="112" Margin="10,327,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="578" TextChanged="_csgo_DescriptionBox4_TextChanged"/>
+                                <Label x:Name="_csgo_DescriptionLabel4" Content="Описание: " HorizontalAlignment="Left" Margin="9,307,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_CaptchaBox4" HorizontalAlignment="Left" Height="38" Margin="136,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" Padding="5,0" FontSize="10"/>
+                                <Label x:Name="_csgo_CaptchaLabel4" Content="Captcha:" HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Сделка 6" Margin="59,0,-59,0" BorderBrush="#FF24416A" Height="26" Padding="6,2" Width="131">
+                            <Grid HorizontalAlignment="Left" Height="456" Margin="0,0,0,-359" VerticalAlignment="Top" Width="772">
+                                <Button x:Name="_csgo_RunButton5" Content="Создать" HorizontalAlignment="Left" Margin="593,390,0,0" VerticalAlignment="Top" Width="169" Height="49" Click="_csgo_RunButton5_Click"/>
+                                <TextBox x:Name="_csgo_Item8Box5" HorizontalAlignment="Left" Height="24" Margin="136,275,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item8Box5_TextChanged"/>
+                                <Label x:Name="_csgo_Label41" Content="Предмет 1:" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_Item7Box5" HorizontalAlignment="Left" Height="24" Margin="136,246,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item7Box5_TextChanged"/>
+                                <Label x:Name="_csgo_Label42" Content="Предмет 2:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_Item6Box5" HorizontalAlignment="Left" Height="24" Margin="136,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item6Box5_TextChanged"/>
+                                <Label x:Name="_csgo_Label43" Content="Предмет 3:" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_Item5Box5" HorizontalAlignment="Left" Height="25" Margin="136,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item5Box5_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item4Box5" HorizontalAlignment="Left" Height="25" Margin="136,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item4Box5_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item3Box5" HorizontalAlignment="Left" Height="24" Margin="136,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item3Box5_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item2Box5" HorizontalAlignment="Left" Height="24" Margin="136,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item2Box5_TextChanged"/>
+                                <TextBox x:Name="_csgo_Item1Box5" HorizontalAlignment="Left" Height="24" Margin="136,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_csgo_Item1Box5_TextChanged"/>
+                                <Label x:Name="_csgo_Label44" Content="Предмет 4:" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="88" Height="23" FontSize="10"/>
+                                <Label x:Name="_csgo_Label45" Content="Предмет 5:" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_csgo_Label46" Content="Предмет 6:" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_csgo_Label47" Content="Предмет 7:" HorizontalAlignment="Left" Margin="10,247,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_csgo_Label48" Content="Предмет 8:" HorizontalAlignment="Left" Margin="10,276,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_DescriptionBox5" HorizontalAlignment="Left" Height="112" Margin="10,327,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="578" TextChanged="_csgo_DescriptionBox5_TextChanged"/>
+                                <Label x:Name="_csgo_DescriptionLabel5" Content="Описание: " HorizontalAlignment="Left" Margin="9,307,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_csgo_CaptchaBox5" HorizontalAlignment="Left" Height="38" Margin="136,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" Padding="5,0" FontSize="10"/>
+                                <Label x:Name="_csgo_CaptchaLabel5" Content="Captcha:" HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top"/>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="DOTA2LoungeTab" Header="DOTA2Lounge" Margin="55,-2,-99,0">
+                <Grid Background="#FFE5E5E5">
+                    <GroupBox x:Name="_dota_AutoBumpGroup" Header="Автоматическое поднятие сделок" HorizontalAlignment="Left" Height="98" Margin="13,511,0,0" VerticalAlignment="Top" Width="782">
+                        <GroupBox.BorderBrush>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF0074FF" Offset="0.007"/>
+                                <GradientStop Color="#FF00132E" Offset="0.997"/>
+                            </LinearGradientBrush>
+                        </GroupBox.BorderBrush>
+                        <Grid HorizontalAlignment="Left" Height="76" Margin="0,0,-2,-13" VerticalAlignment="Top" Width="772">
+                            <TextBox x:Name="_dota_Trade6Box" HorizontalAlignment="Left" Height="24" Margin="353,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" VerticalContentAlignment="Center" TextChanged="_dota_Trade6Box_TextChanged"/>
+                            <TextBox x:Name="_dota_Trade5Box" HorizontalAlignment="Left" Height="24" Margin="183,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" VerticalContentAlignment="Center" TextChanged="_dota_Trade5Box_TextChanged"/>
+                            <TextBox x:Name="_dota_Trade4Box" HorizontalAlignment="Left" Height="24" Margin="13,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" VerticalContentAlignment="Center" TextChanged="_dota_Trade4Box_TextChanged"/>
+                            <TextBox x:Name="_dota_Trade3Box" HorizontalAlignment="Left" Height="24" Margin="353,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" VerticalContentAlignment="Center" TextChanged="_dota_Trade3Box_TextChanged"/>
+                            <TextBox x:Name="_dota_Trade2Box" HorizontalAlignment="Left" Height="24" Margin="183,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" VerticalContentAlignment="Center" TextChanged="_dota_Trade2Box_TextChanged"/>
+                            <TextBox x:Name="_dota_Trade1Box" HorizontalAlignment="Left" Height="24" Margin="13,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" VerticalContentAlignment="Center" TextChanged="_dota_Trade1Box_TextChanged"/>
+                            <Button x:Name="_dota_AutoBumpStartBtn" Content="Запустить" HorizontalAlignment="Left" Margin="529,13,0,0" VerticalAlignment="Top" Width="232" Height="24" Click="_dota_AutoBumpStartBtn_Click"/>
+                            <Button x:Name="_dota_AutoBumpStopBtn" Content="Остановить" HorizontalAlignment="Left" Margin="529,42,0,0" VerticalAlignment="Top" Width="232" Height="24" IsEnabled="False" Click="_dota_AutoBumpStopBtn_Click"/>
+                        </Grid>
+                    </GroupBox>
+                    <TabControl x:Name="WriteMessageControl" HorizontalAlignment="Left" Height="482" Margin="13,24,0,0" VerticalAlignment="Top" Width="782" Background="{x:Null}">
+                        <TabControl.BorderBrush>
+                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                <GradientStop Color="#FF0074FF" Offset="0"/>
+                                <GradientStop Color="#FF00132E" Offset="1"/>
+                            </LinearGradientBrush>
+                        </TabControl.BorderBrush>
+                        <TabItem Header="Сделка 1" BorderBrush="#FF4073BB" BorderThickness="0" Margin="-2,0,2,0" Width="100" Height="26">
+                            <TabItem.Background>
+                                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                    <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                                    <GradientStop Color="#FFE5E5E5" Offset="1"/>
+                                </LinearGradientBrush>
+                            </TabItem.Background>
+                            <Grid HorizontalAlignment="Left" Height="449" VerticalAlignment="Top" Width="777" Background="#FFE5E5E5" Margin="0,0,-1,0">
+                                <Button x:Name="_dota_CreateTrade_RunButton" Content="Создать" HorizontalAlignment="Left" Margin="593,390,0,0" VerticalAlignment="Top" Width="169" Height="49" Click="_dota_CreateTrade_RunButton_Click"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item8Box" HorizontalAlignment="Left" Height="24" Margin="136,275,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item8Box_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label1" Content="Предмет 1:" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item7Box" HorizontalAlignment="Left" Height="24" Margin="136,246,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item7Box_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label2" Content="Предмет 2:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item6Box" HorizontalAlignment="Left" Height="24" Margin="136,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item6Box_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label3" Content="Предмет 3:" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item5Box" HorizontalAlignment="Left" Height="25" Margin="136,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item5Box_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item4Box" HorizontalAlignment="Left" Height="25" Margin="136,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item4Box_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item3Box" HorizontalAlignment="Left" Height="24" Margin="136,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item3Box_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item2Box" HorizontalAlignment="Left" Height="24" Margin="136,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item2Box_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item1Box" HorizontalAlignment="Left" Height="24" Margin="136,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item1Box_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label4" Content="Предмет 4:" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="88" Height="23" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label5" Content="Предмет 5:" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label6" Content="Предмет 6:" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label7" Content="Предмет 7:" HorizontalAlignment="Left" Margin="10,247,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label8" Content="Предмет 8:" HorizontalAlignment="Left" Margin="10,276,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_DescriptionBox" HorizontalAlignment="Left" Height="112" Margin="10,327,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="578" TextChanged="_dota_CreateTrade_DescriptionBox_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_DescriptionLabel" Content="Описание: " HorizontalAlignment="Left" Margin="9,307,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CaptchaBox" HorizontalAlignment="Left" Height="38" Margin="136,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" Padding="5,0" FontSize="10"/>
+                                <Label x:Name="_dota_CaptchaLabel" Content="Captcha: " HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Отправить сообщение" BorderBrush="#FF24416A" Margin="492,0,-543,0" Height="26">
+                            <Grid Background="#FFE5E5E5">
+                                <TextBox x:Name="_dota_PostMessage_TradeIDBox" HorizontalAlignment="Left" Height="31" Margin="136,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="246" VerticalContentAlignment="Center"/>
+                                <Button x:Name="_dota_PostMessage_PostMessageBtn" Content="Написать сообщение" HorizontalAlignment="Left" Margin="587,389,0,0" VerticalAlignment="Top" Width="179" Height="49" Click="_dota_PostMessage_PostMessageBtn_Click"/>
+                                <Label x:Name="_dota_PostMessage_TradeIDLabel" Content="Trade ID: " HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top"/>
+                                <TextBox x:Name="_dota_PostMessage_Item8Box" HorizontalAlignment="Left" Height="24" Margin="136,258,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_PostMessage_Item8Box_TextChanged"/>
+                                <Label x:Name="_dota_PostMessage_Label1" Content="Предмет 1:" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_PostMessage_Item7Box" HorizontalAlignment="Left" Height="24" Margin="136,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_PostMessage_Item7Box_TextChanged"/>
+                                <Label x:Name="_dota_PostMessage_Label2" Content="Предмет 2:" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_PostMessage_Item6Box" HorizontalAlignment="Left" Height="24" Margin="136,202,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_PostMessage_Item6Box_TextChanged"/>
+                                <Label x:Name="_dota_PostMessage_Label3" Content="Предмет 3:" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_PostMessage_Item5Box" HorizontalAlignment="Left" Height="25" Margin="136,174,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_PostMessage_Item5Box_TextChanged"/>
+                                <TextBox x:Name="_dota_PostMessage_Item4Box" HorizontalAlignment="Left" Height="25" Margin="136,146,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_PostMessage_Item4Box_TextChanged"/>
+                                <TextBox x:Name="_dota_PostMessage_Item3Box" HorizontalAlignment="Left" Height="24" Margin="136,119,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_PostMessage_Item3Box_TextChanged"/>
+                                <TextBox x:Name="_dota_PostMessage_Item2Box" HorizontalAlignment="Left" Height="24" Margin="136,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_PostMessage_Item2Box_TextChanged"/>
+                                <TextBox x:Name="_dota_PostMessage_Item1Box" HorizontalAlignment="Left" Height="24" Margin="136,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_PostMessage_Item1Box_TextChanged"/>
+                                <Label x:Name="_dota_PostMessage_Label4" Content="Предмет 4:" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top" Width="88" Height="23" FontSize="10"/>
+                                <Label x:Name="_dota_PostMessage_Label5" Content="Предмет 5:" HorizontalAlignment="Left" Margin="10,176,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_PostMessage_Label6" Content="Предмет 6:" HorizontalAlignment="Left" Margin="10,203,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_PostMessage_Label7" Content="Предмет 7:" HorizontalAlignment="Left" Margin="10,231,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_PostMessage_Label8" Content="Предмет 8:" HorizontalAlignment="Left" Margin="10,259,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_PostMessage_TextToPostBox" HorizontalAlignment="Left" Height="118" Margin="10,320,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="572" TextChanged="_dota_PostMessage_TextToPostBox_TextChanged"/>
+                                <Label x:Name="_dota_PostMessage_TextToPostLabel" Content="Текст: " HorizontalAlignment="Left" Margin="9,299,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Сделка 2" BorderBrush="#FF4073BB" BorderThickness="0" Margin="-140,0,140,0" Width="100" Height="26">
+                            <TabItem.Background>
+                                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                    <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                                    <GradientStop Color="#FFE5E5E5" Offset="1"/>
+                                </LinearGradientBrush>
+                            </TabItem.Background>
+                            <Grid HorizontalAlignment="Left" Height="449" VerticalAlignment="Top" Width="777" Background="#FFE5E5E5" Margin="0,0,-1,-1">
+                                <Button x:Name="_dota_CreateTrade_RunButton1" Content="Создать" HorizontalAlignment="Left" Margin="593,390,0,0" VerticalAlignment="Top" Width="169" Height="49" Click="_dota_CreateTrade_RunButton1_Click"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item8Box1" HorizontalAlignment="Left" Height="24" Margin="136,275,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item8Box1_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label9" Content="Предмет 1:" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item7Box1" HorizontalAlignment="Left" Height="24" Margin="136,246,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item7Box1_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label10" Content="Предмет 2:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item6Box1" HorizontalAlignment="Left" Height="24" Margin="136,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item6Box1_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label11" Content="Предмет 3:" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item5Box1" HorizontalAlignment="Left" Height="25" Margin="136,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item5Box1_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item4Box1" HorizontalAlignment="Left" Height="25" Margin="136,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item4Box1_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item3Box1" HorizontalAlignment="Left" Height="24" Margin="136,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item3Box1_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item2Box1" HorizontalAlignment="Left" Height="24" Margin="136,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item2Box1_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item1Box1" HorizontalAlignment="Left" Height="24" Margin="136,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item1Box1_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label12" Content="Предмет 4:" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="88" Height="23" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label13" Content="Предмет 5:" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label14" Content="Предмет 6:" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label15" Content="Предмет 7:" HorizontalAlignment="Left" Margin="10,247,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label16" Content="Предмет 8:" HorizontalAlignment="Left" Margin="10,276,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_DescriptionBox1" HorizontalAlignment="Left" Height="112" Margin="10,327,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="578" TextChanged="_dota_CreateTrade_DescriptionBox1_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_DescriptionLabel1" Content="Описание: " HorizontalAlignment="Left" Margin="9,307,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CaptchaBox1" HorizontalAlignment="Left" Height="38" Margin="136,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" Padding="5,0" FontSize="10"/>
+                                <Label x:Name="_dota_CaptchaLabel1" Content="Captcha: " HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Сделка 3" BorderBrush="#FF4073BB" BorderThickness="0" Margin="-141,0,141,0" Width="100" Height="26">
+                            <TabItem.Background>
+                                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                    <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                                    <GradientStop Color="#FFE5E5E5" Offset="1"/>
+                                </LinearGradientBrush>
+                            </TabItem.Background>
+                            <Grid HorizontalAlignment="Left" Height="449" VerticalAlignment="Top" Width="777" Background="#FFE5E5E5" Margin="0,0,-1,-1">
+                                <Button x:Name="_dota_CreateTrade_RunButton2" Content="Создать" HorizontalAlignment="Left" Margin="593,390,0,0" VerticalAlignment="Top" Width="169" Height="49" Click="_dota_CreateTrade_RunButton2_Click"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item8Box2" HorizontalAlignment="Left" Height="24" Margin="136,275,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item8Box2_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label17" Content="Предмет 1:" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item7Box2" HorizontalAlignment="Left" Height="24" Margin="136,246,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item7Box2_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label18" Content="Предмет 2:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item6Box2" HorizontalAlignment="Left" Height="24" Margin="136,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item6Box2_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label19" Content="Предмет 3:" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item5Box2" HorizontalAlignment="Left" Height="25" Margin="136,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item5Box2_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item4Box2" HorizontalAlignment="Left" Height="25" Margin="136,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item4Box2_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item3Box2" HorizontalAlignment="Left" Height="24" Margin="136,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item3Box2_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item2Box2" HorizontalAlignment="Left" Height="24" Margin="136,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item2Box2_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item1Box2" HorizontalAlignment="Left" Height="24" Margin="136,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item1Box2_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label20" Content="Предмет 4:" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="88" Height="23" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label21" Content="Предмет 5:" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label22" Content="Предмет 6:" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label23" Content="Предмет 7:" HorizontalAlignment="Left" Margin="10,247,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label24" Content="Предмет 8:" HorizontalAlignment="Left" Margin="10,276,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_DescriptionBox2" HorizontalAlignment="Left" Height="112" Margin="10,327,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="578" TextChanged="_dota_CreateTrade_DescriptionBox2_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_DescriptionLabel2" Content="Описание: " HorizontalAlignment="Left" Margin="9,307,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CaptchaBox2" HorizontalAlignment="Left" Height="38" Margin="136,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" Padding="5,0" FontSize="10"/>
+                                <Label x:Name="_dota_CaptchaLabel2" Content="Captcha: " HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Сделка 4" BorderBrush="#FF4073BB" BorderThickness="0" Margin="-142,0,142,0" Width="100" Height="26">
+                            <TabItem.Background>
+                                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                    <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                                    <GradientStop Color="#FFE5E5E5" Offset="1"/>
+                                </LinearGradientBrush>
+                            </TabItem.Background>
+                            <Grid HorizontalAlignment="Left" Height="449" VerticalAlignment="Top" Width="777" Background="#FFE5E5E5" Margin="0,0,-1,-1">
+                                <Button x:Name="_dota_CreateTrade_RunButton3" Content="Создать" HorizontalAlignment="Left" Margin="593,390,0,0" VerticalAlignment="Top" Width="169" Height="49" Click="_dota_CreateTrade_RunButton3_Click"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item8Box3" HorizontalAlignment="Left" Height="24" Margin="136,275,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item8Box3_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label25" Content="Предмет 1:" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item7Box3" HorizontalAlignment="Left" Height="24" Margin="136,246,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item7Box3_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label26" Content="Предмет 2:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item6Box3" HorizontalAlignment="Left" Height="24" Margin="136,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item6Box3_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label27" Content="Предмет 3:" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item5Box3" HorizontalAlignment="Left" Height="25" Margin="136,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item5Box3_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item4Box3" HorizontalAlignment="Left" Height="25" Margin="136,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item4Box3_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item3Box3" HorizontalAlignment="Left" Height="24" Margin="136,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item3Box3_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item2Box3" HorizontalAlignment="Left" Height="24" Margin="136,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item2Box3_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item1Box3" HorizontalAlignment="Left" Height="24" Margin="136,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item1Box3_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label28" Content="Предмет 4:" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="88" Height="23" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label29" Content="Предмет 5:" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label30" Content="Предмет 6:" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label31" Content="Предмет 7:" HorizontalAlignment="Left" Margin="10,247,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label32" Content="Предмет 8:" HorizontalAlignment="Left" Margin="10,276,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_DescriptionBox3" HorizontalAlignment="Left" Height="112" Margin="10,327,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="578" TextChanged="_dota_CreateTrade_DescriptionBox3_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_DescriptionLabel3" Content="Описание: " HorizontalAlignment="Left" Margin="9,307,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CaptchaBox3" HorizontalAlignment="Left" Height="38" Margin="136,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" Padding="5,0" FontSize="10"/>
+                                <Label x:Name="_dota_CaptchaLabel3" Content="Captcha: " HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Сделка 5" BorderBrush="#FF4073BB" BorderThickness="0" Margin="-143,0,143,0" Width="100" Height="26">
+                            <TabItem.Background>
+                                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                    <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                                    <GradientStop Color="#FFE5E5E5" Offset="1"/>
+                                </LinearGradientBrush>
+                            </TabItem.Background>
+                            <Grid HorizontalAlignment="Left" Height="449" VerticalAlignment="Top" Width="777" Background="#FFE5E5E5" Margin="0,0,-1,-1">
+                                <Button x:Name="_dota_CreateTrade_RunButton4" Content="Создать" HorizontalAlignment="Left" Margin="593,390,0,0" VerticalAlignment="Top" Width="169" Height="49" Click="_dota_CreateTrade_RunButton4_Click"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item8Box4" HorizontalAlignment="Left" Height="24" Margin="136,275,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item8Box4_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label33" Content="Предмет 1:" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item7Box4" HorizontalAlignment="Left" Height="24" Margin="136,246,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item7Box4_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label34" Content="Предмет 2:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item6Box4" HorizontalAlignment="Left" Height="24" Margin="136,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item6Box4_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label35" Content="Предмет 3:" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item5Box4" HorizontalAlignment="Left" Height="25" Margin="136,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item5Box4_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item4Box4" HorizontalAlignment="Left" Height="25" Margin="136,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item4Box4_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item3Box4" HorizontalAlignment="Left" Height="24" Margin="136,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item3Box4_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item2Box4" HorizontalAlignment="Left" Height="24" Margin="136,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item2Box4_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item1Box4" HorizontalAlignment="Left" Height="24" Margin="136,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item1Box4_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label36" Content="Предмет 4:" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="88" Height="23" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label37" Content="Предмет 5:" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label38" Content="Предмет 6:" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label39" Content="Предмет 7:" HorizontalAlignment="Left" Margin="10,247,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label40" Content="Предмет 8:" HorizontalAlignment="Left" Margin="10,276,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_DescriptionBox4" HorizontalAlignment="Left" Height="112" Margin="10,327,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="578" TextChanged="_dota_CreateTrade_DescriptionBox4_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_DescriptionLabel4" Content="Описание: " HorizontalAlignment="Left" Margin="9,307,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CaptchaBox4" HorizontalAlignment="Left" Height="38" Margin="136,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" Padding="5,0" FontSize="10"/>
+                                <Label x:Name="_dota_CaptchaLabel4" Content="Captcha: " HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Сделка 6" BorderBrush="#FF4073BB" BorderThickness="0" Margin="-144,0,144,0" Width="100" Height="26">
+                            <TabItem.Background>
+                                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                    <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                                    <GradientStop Color="#FFE5E5E5" Offset="1"/>
+                                </LinearGradientBrush>
+                            </TabItem.Background>
+                            <Grid HorizontalAlignment="Left" Height="449" VerticalAlignment="Top" Width="777" Background="#FFE5E5E5" Margin="0,0,-1,-1">
+                                <Button x:Name="_dota_CreateTrade_RunButton5" Content="Создать" HorizontalAlignment="Left" Margin="593,390,0,0" VerticalAlignment="Top" Width="169" Height="49" Click="_dota_CreateTrade_RunButton5_Click"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item8Box5" HorizontalAlignment="Left" Height="24" Margin="136,275,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item8Box5_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label41" Content="Предмет 1:" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item7Box5" HorizontalAlignment="Left" Height="24" Margin="136,246,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item7Box5_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label42" Content="Предмет 2:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item6Box5" HorizontalAlignment="Left" Height="24" Margin="136,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item6Box5_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label43" Content="Предмет 3:" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item5Box5" HorizontalAlignment="Left" Height="25" Margin="136,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item5Box5_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item4Box5" HorizontalAlignment="Left" Height="25" Margin="136,157,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item4Box5_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item3Box5" HorizontalAlignment="Left" Height="24" Margin="136,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item3Box5_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item2Box5" HorizontalAlignment="Left" Height="24" Margin="136,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item2Box5_TextChanged"/>
+                                <TextBox x:Name="_dota_CreateTrade_Item1Box5" HorizontalAlignment="Left" Height="24" Margin="136,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" TextChanged="_dota_CreateTrade_Item1Box5_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_Label44" Content="Предмет 4:" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="88" Height="23" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label45" Content="Предмет 5:" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label46" Content="Предмет 6:" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label47" Content="Предмет 7:" HorizontalAlignment="Left" Margin="10,247,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <Label x:Name="_dota_CreateTrade_Label48" Content="Предмет 8:" HorizontalAlignment="Left" Margin="10,276,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CreateTrade_DescriptionBox5" HorizontalAlignment="Left" Height="112" Margin="10,327,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="578" TextChanged="_dota_CreateTrade_DescriptionBox5_TextChanged"/>
+                                <Label x:Name="_dota_CreateTrade_DescriptionLabel5" Content="Описание: " HorizontalAlignment="Left" Margin="9,307,0,0" VerticalAlignment="Top" Width="88" Height="22" FontSize="10"/>
+                                <TextBox x:Name="_dota_CaptchaBox5" HorizontalAlignment="Left" Height="38" Margin="136,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="626" VerticalContentAlignment="Center" Padding="5,0" FontSize="10"/>
+                                <Label x:Name="_dota_CaptchaLabel5" Content="Captcha: " HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top"/>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>
